@@ -31,11 +31,15 @@ def generate_sparse_x_2t(
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    plt.imshow(
-        generate_sparse_x_2t(
+    sparse_x_2t = generate_sparse_x_2t(
             n_feat=10, 
             n_data=40, 
             frac_is_zero=0.2
-        ),
+        )
+    # print(sparse_x_2t)
+    plt.imshow(
+        sparse_x_2t,
+        cmap='seismic'
     )
+    # red positive, white zero, blue negative
     plt.savefig('viz/01_sparse_x_2t.png')
