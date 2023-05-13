@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchtyping import TensorType 
 # import torchvision
 
 
@@ -20,43 +21,46 @@ class TwoWeightLinearNet(nn.Module):
     """
     def __init__(
         self,
-        n_in,
-        n_mid
+        n_in: int,
+        n_mid: int
     ):
 
         super().__init__()
         
-        w1_2T = nn.parameter.Parameter(
+        w1_2t = nn.parameter.Parameter(
             torch.empty(
                 (n_mid, n_in)
             )
         )
-        w1_rand_norm_2T= nn.init.xavier_normal(
-            w1_2T
+        w1_rand_norm_2t= nn.init.xavier_normal(
+            w1_2t
         )
 
-        self.w1_2T = w1_rand_norm_2T
+        self.w1_2t = w1_rand_norm_2t
 
-        w2_2T = nn.parameter.Parameter(
+        w2_2t = nn.parameter.Parameter(
             torch.empty(
                 (n_in, n_mid)
             )
         )
 
-        w2_rand_norm_2T = nn.init.xavier_normal_(
-            w2_2T
+        w2_rand_norm_2t = nn.init.xavier_normal_(
+            w2_2t
         )
-        self.w2_2T = w2_rand_norm_2T
+        self.w2_2t = w2_rand_norm_2t
 
-        self.b_1T = nn.parameter.Parameter(
+        self.b_1t = nn.parameter.Parameter(
             torch.zeros(n_in)
         ) 
 
-    def forward(self, x_2T):
-        w1_x_2T = self.w1_2T @ x_2T 
-        lin_x = self.w2_2T @ w1_x_2T + self.b_1T
-        relu_x = self.relu(lin_x)
-        return relu_x
+    def forward(
+        self, 
+        x_2t: TensorType['n_in', 'n_feat']
+    ):
+        w1_x_2t = self.w1_2t @ x_2t
+        lin_x_2t = self.w2_2t @ w1_x_2t + self.b_1t
+        relu_x_2t = self.relu(lin_x_2t)
+        return relu_x_2t
 
 
 class OneWeightLinearNet(nn.Module):
@@ -73,34 +77,38 @@ class OneWeightLinearNet(nn.Module):
     """
     def __init__(
         self,
-        n_in,
-        n_mid
+        n_in: int,
+        n_mid: int
     ):
 
         super().__init__()
         
-        w1_2T = nn.parameter.Parameter(
+        w1_2t = nn.parameter.Parameter(
             torch.empty(
                 (n_mid, n_in)
             )
         )
-        w1_rand_norm_2T= nn.init.xavier_normal(
-            w1_2T
+        w1_rand_norm_2t = nn.init.xavier_normal(
+            w1_2t
         )
 
-        self.w1_2T = w1_rand_norm_2T
+        self.w1_2t = w1_rand_norm_2t
 
-        self.b_1T = nn.parameter.Parameter(
+        self.b_1t = nn.parameter.Parameter(
             torch.zeros(n_in)
         ) 
 
-    def forward(self, x_2T):
-        w1_x_2T = self.w1_2T @ x_2T 
-        lin_x = self.w1_2T.T @ w1_x_2T + self.b_1T
-        relu_x = self.relu(lin_x)
-        return relu_x   
+    def forward(
+        self, 
+        x_2t: TensorType["n_in", "n_feat"]
+    ):
+        w1_x_2t = self.w1_2t @ x_2t
+        lin_x_2t = self.w1_2t.T @ w1_x_2t + self.b_1t
+        relu_x_2t = self.relu(lin_x_2t)
+
+        return relu_x_2t   
     
-    
+
 
 
 
