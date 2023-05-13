@@ -38,4 +38,4 @@ if __name__ == "__main__":
             frac_is_zero=0.2
         ),
     )
-    plt.savefig('viz/sparse_x_2t.png')
+    plt.savefig('viz/01_sparse_x_2t.png')
