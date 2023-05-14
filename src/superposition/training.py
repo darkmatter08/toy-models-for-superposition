@@ -1,10 +1,10 @@
 import torch
 from torch import Tensor
-
 from jaxtyping import Float 
 from typing import Dict, Tuple, List, Any, Optional
 
 from tqdm import tqdm
+import json
 
 from src.superposition.generate_x import \
     generate_sparse_x_2t, \
@@ -12,6 +12,7 @@ from src.superposition.generate_x import \
 
 from safetensors import safe_open
 from safetensors.torch import save_file
+
 
 def train_toy_model(
     toy_model,
@@ -88,14 +89,21 @@ def train_toy_model(
 
     final_model_state_dict = toy_model.state_dict()
     final_file_path_str = f'{save_folder_str}/{save_model_name}_0.pt'
-    print('Last 5 loss values:')
-    for i in epoch_loss_list[-5:]:
-        print(i)
+
+    epoch_loss_json_str = f'{save_folder_str}/epoch_loss_list.json'
+
+    epoch_loss_dict = {
+        'epoch_loss_list': epoch_loss_list
+    } 
+
+    save_dict_to_json(
+        json_file_name_str=epoch_loss_json_str,
+        data_dict=epoch_loss_dict
+    )
 
     save_model(
         pt_model_state_dict=final_model_state_dict,
         file_path_str=final_file_path_str,
-        metadata_dict={"epoch_loss_list": epoch_loss_list }
     )
 
     # save checkpoint
@@ -158,4 +166,39 @@ def load_partial_model(
             tensor_dict[key] = f.get_tensor(key)
     
     return tensor_dict
- 
+
+
+def save_dict_to_json(
+    json_file_name_str: str,
+    data_dict: Dict[str, Any]
+):
+    with open(json_file_name_str, 'w') as f:
+        json.dump(
+            data_dict, f, 
+            ensure_ascii=False, 
+            indent=4
+        )
+
+
+def load_dict_from_json(
+    json_file_name_str: str,
+):
+    with open(json_file_name_str, 'r') as f:
+        data_dict = json.load(f)
+    return data_dict
+
+
+if __name__ == "__main__":
+    data_dict = {"test": ['a', 12]}
+    json_file_name_str = 'test.json'
+
+    save_dict_to_json(
+        json_file_name_str=json_file_name_str,
+        data_dict=data_dict
+    )
+
+    data_from_dict = load_dict_from_json(
+        json_file_name_str=json_file_name_str
+    )
+
+    print(data_from_dict)
