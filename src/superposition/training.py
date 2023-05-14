@@ -4,9 +4,7 @@ from torch import Tensor
 from jaxtyping import Float 
 from typing import Dict, Tuple, List, Any
 
-from src.superposition.toynet import \
-    OneWeightLinearNet, \
-    TwoWeightLinearNet 
+from tqdm import tqdm
 
 from src.superposition.generate_x import \
     generate_sparse_x_2t, \
@@ -50,7 +48,7 @@ def train_toy_model(
         0.7 ** i for i in range(n_feat)
     ]).to('cuda')
 
-    for i in range(n_epoch):
+    for i in tqdm(range(n_epoch)):
         sparse_x_2t = generate_sparse_x_2t(
             n_feat=n_feat,
             n_data=n_data,
@@ -116,8 +114,8 @@ def save_model(
     file_path_str:str,
 ):   
     save_file(
-        pt_model_state_dict,
-        file_path_str
+        tensors=pt_model_state_dict,
+        filename=file_path_str
     )
 
 

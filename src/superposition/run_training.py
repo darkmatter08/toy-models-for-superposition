@@ -11,15 +11,15 @@ from src.superposition.toynet import \
 def test_train_one_weight_linear_net():
     n_data = 1024
     n_feat = 20
-    n_mid = 5
+    n_hidden = 5
 
-    one_w_net_folder_path_str = 'weights/one_w/'
+    one_w_net_folder_path_str = 'src/superposition/weights/one_w'
     one_w_net_name = 'one_w_net'
 
     # y = RELU(w1.T * w1 * x + b)
     one_w_net = OneWeightLinearNet(
         n_feat=n_feat,
-        n_mid=n_mid
+        n_hidden=n_hidden
     )
 
     # two_w_net_folder_path_str = 'weights/two_w/'
@@ -53,15 +53,15 @@ def test_train_one_weight_linear_net():
 def test_train_two_weight_linear_net():
     n_data = 1024
     n_feat = 20
-    n_mid = 5
+    n_hidden = 5
 
-    two_w_net_folder_path_str = 'weights/two_w/'
+    two_w_net_folder_path_str = 'src/superposition/weights/two_w'
     two_w_net_name = 'two_w_net'
 
-    # y = RELU(w2 * w1 * x + b)
+    # y = RELU(x * w1 * w2  + b)
     two_w_net = TwoWeightLinearNet(
         n_feat=n_feat,
-        n_mid=n_mid
+        n_hidden=n_hidden
     )
 
     # test run 

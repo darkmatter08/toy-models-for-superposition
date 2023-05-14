@@ -9,29 +9,34 @@ from jaxtyping import Float
 
 class TwoWeightLinearNet(nn.Module):
     """
-        y = RELU(w2 * w1 * x + b)
+        y = RELU(x * w1 * w2 + b)
+            pytorch nn.Linear usually is
+            y = x * A.T + b
 
-        x = (n_feat, n_data)
-        w1 = (n_mid, n_feat)
-        w2 = (n_feat, n_mid) 
-        w2 * w1 * x = (n_feat, n_data)
-        b = (n_feat, *n_data) 
+        x = (n_data, n_feat)
+
+        w1 = (n_feat, n_hidden)
+        w2 = (n_hidden, n_feat) 
+
+        w2 * w1 * x = (n_data, n_feat)
+
+        b = (*n_data, n_feat) 
 
     """
     def __init__(
         self,
         n_feat: int,
-        n_mid: int
+        n_hidden: int
     ):
 
         super().__init__()
         
         w1_2t = nn.parameter.Parameter(
             torch.empty(
-                (n_mid, n_feat)
+                (n_feat, n_hidden)
             )
         )
-        w1_rand_norm_2t= nn.init.xavier_normal(
+        w1_rand_norm_2t= nn.init.xavier_normal_(
             w1_2t
         )
 
@@ -39,7 +44,7 @@ class TwoWeightLinearNet(nn.Module):
 
         w2_2t = nn.parameter.Parameter(
             torch.empty(
-                (n_feat, n_mid)
+                (n_hidden, n_feat)
             )
         )
 
@@ -56,10 +61,13 @@ class TwoWeightLinearNet(nn.Module):
 
     def forward(
         self, 
-        x_2t: Float[Tensor, 'n_feat n_data']
+        x_2t: Float[Tensor, 'n_data n_feat']
     ):
-        w1_x_2t = self.w1_2t @ x_2t
-        lin_x_2t = self.w2_2t @ w1_x_2t + self.b_1t
+        # y = RELU(x * w1 * w2 + b)
+        # y (n_data, n_feat)
+        
+        x_w1_2t =  x_2t @ self.w1_2t
+        lin_x_2t = x_w1_2t @ self.w2_2t + self.b_1t
         relu_x_2t = self.relu(lin_x_2t)
         return relu_x_2t
 
@@ -67,29 +75,31 @@ class TwoWeightLinearNet(nn.Module):
 class OneWeightLinearNet(nn.Module):
     """
         y = RELU(
-            w1.Transpose * w1 * x + b
+            x * w1 * w1.T + b
         )
 
-        x = (n_feat, n_data)
-        w1 = (n_mid, n_feat)
-        W1.T = (n_feat, n_mid)
-        b = (n_feat, *n_data) 
+        x = (n_data, n_feat)
+
+        w1 = (n_feat, n_hidden)
+        w1.T = (n_hidden, n_feat)
+
+        b = (*n_data, n_feat) 
 
     """
     def __init__(
         self,
         n_feat: int,
-        n_mid: int
+        n_hidden: int
     ):
 
         super().__init__()
         
         w1_2t = nn.parameter.Parameter(
             torch.empty(
-                (n_mid, n_feat)
+                (n_feat, n_hidden)
             )
         )
-        w1_rand_norm_2t = nn.init.xavier_normal(
+        w1_rand_norm_2t = nn.init.xavier_normal_(
             w1_2t
         )
 
@@ -103,11 +113,11 @@ class OneWeightLinearNet(nn.Module):
 
     def forward(
         self, 
-        x_2t: Float[Tensor, "n_feat n_data"]
+        x_2t: Float[Tensor, "n_data n_feat"]
     ):
-        w1_x_2t = self.w1_2t @ x_2t
-        lin_x_2t = self.w1_2t.T @ w1_x_2t + self.b_1t
-        relu_x_2t = self.relu(lin_x_2t)
+        x_w1_2t = x_2t @ self.w1_2t
+        transpose_w1_2t = x_w1_2t @ self.w1_2t.T + self.b_1t
+        relu_x_2t = self.relu(transpose_w1_2t)
 
         return relu_x_2t   
     
