@@ -88,6 +88,10 @@ def train_toy_model(
 
     final_model_state_dict = toy_model.state_dict()
     final_file_path_str = f'{save_folder_str}/{save_model_name}_0.pt'
+    print('Last 5 loss values:')
+    for i in epoch_loss_list[-5:]:
+        print(i)
+
     save_model(
         pt_model_state_dict=final_model_state_dict,
         file_path_str=final_file_path_str
