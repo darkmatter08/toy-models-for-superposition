@@ -103,7 +103,7 @@ class OneWeightLinearNet(nn.Module):
 
     def forward(
         self, 
-        x_2t: Float[Tensor, "n_feat", "n_data"]
+        x_2t: Float[Tensor, "n_feat n_data"]
     ):
         w1_x_2t = self.w1_2t @ x_2t
         lin_x_2t = self.w1_2t.T @ w1_x_2t + self.b_1t
