@@ -7,9 +7,6 @@ from jaxtyping import Float
 # import torchvision
 
 
-SEED = 0
-torch.manual_seed(SEED)
-
 class TwoWeightLinearNet(nn.Module):
     """
         y = RELU(w2 * w1 * x + b)
