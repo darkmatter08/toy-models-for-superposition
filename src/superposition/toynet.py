@@ -52,6 +52,8 @@ class TwoWeightLinearNet(nn.Module):
             torch.zeros(n_feat)
         ) 
 
+        self.relu = nn.ReLU()
+
     def forward(
         self, 
         x_2t: Float[Tensor, 'n_feat n_data']
@@ -96,6 +98,8 @@ class OneWeightLinearNet(nn.Module):
         self.b_1t = nn.parameter.Parameter(
             torch.zeros(n_feat)
         ) 
+
+        self.relu = nn.ReLU()
 
     def forward(
         self, 
