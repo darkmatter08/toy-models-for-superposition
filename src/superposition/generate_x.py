@@ -44,7 +44,7 @@ if __name__ == "__main__":
     sparse_x_2t = generate_sparse_x_2t(
             n_feat=10, 
             n_data=40, 
-            frac_is_zero=0.2
+            frac_is_zero=0.99
         )
     # print(sparse_x_2t)
     plt.imshow(
@@ -52,4 +52,15 @@ if __name__ == "__main__":
         cmap='seismic'
     )
     # red positive, white zero, blue negative
-    plt.savefig('viz/01_sparse_x_2t.png')
+    plt.savefig('src/superposition/viz/01_sparse_x_2t.png')
+
+    norm_x_2t = normalize_matrix(
+        sparse_x_2t
+    )
+
+    plt.imshow(
+        norm_x_2t,
+        cmap='seismic'
+    )
+
+    plt.savefig('src/superposition/viz/02_norm_x_2t.png')
