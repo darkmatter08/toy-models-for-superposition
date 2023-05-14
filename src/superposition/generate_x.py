@@ -1,6 +1,7 @@
 import torch
 from torch import Tensor
 from jaxtyping import Float
+from sklearn import preprocessing
 
 
 def generate_sparse_x_2t(
@@ -28,6 +29,15 @@ def generate_sparse_x_2t(
 
     return sparse_x_2t
 
+
+def normalize_matrix(
+    x:Float[Tensor, 'n_feat n_data']
+) -> Float[Tensor, 'n_feat n_data']:
+    return torch.tensor(
+        preprocessing.normalize(
+            x, norm='l2'
+        )
+    )
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
