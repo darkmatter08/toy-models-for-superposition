@@ -13,12 +13,13 @@ from src.generate_x import \
 from safetensors import safe_open
 from safetensors.torch import safe_file
 
-def train_toy(
+def train_toy_model(
+    toy_model_name:str,
     toy_model,
-    n_epochs,
-    n_feat,
-    n_data,
-    sparsity
+    n_epochs:int,
+    n_feat:int,
+    n_data:int,
+    sparsity: float
 ):
     optim = torch.optim.AdamW(
         toy_model.parameters(),
@@ -61,9 +62,22 @@ def train_toy(
             print('epoch: ', i)
             print('loss: ', loss_t.item())
 
-    model_weights = toy_model.state_dict()
+            file_path_str = f'weights/train/{toy_model_name}_{i}.pt'
+
+            save_model(
+                pt_model=toy_model.state_dict(),
+                file_path_str=file_path_str
+                )
+
+    final_model_weights = toy_model.state_dict()
+    final_file_path_str = f'weight/train/{toy_model_name}_0.pt'
+    save_model(
+        pt_model=final_model_weight,
+        file_path_str=file_path_str
+    )
+
     # save checkpoint
-    return loss_t.item(), model_weights
+    return loss_t.item(), final_model_weights
 
     
 def mean_weighted_square_error_loss(
@@ -79,17 +93,16 @@ def mean_weighted_square_error_loss(
 
 
 def save_model(
-    pt_model,
+    pt_model_state_dict,
     file_path_str:str,
 ):   
     save_file(
-        model,
+        pt_model_state_dict,
         file_path_str
     )
 
 
 def load_model(
-    pt_model,
     file_path_str: str
 ) -> Dict[str, Any]
     tensor_dict = {}
@@ -106,7 +119,6 @@ def load_model(
 
 
 def load_partial_model(
-    pt_model,
     file_path_str: str,
     model_key_list: List[str]
 ) -> Dict[str, Any]
