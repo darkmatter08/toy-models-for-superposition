@@ -93,8 +93,7 @@ def multi_sparsity_one_weight_linear_net(
     n_feat = 20
     n_hidden = 5
 
-    two_w_net_folder_path_str = 'src/superposition/weights/two_w'
-    two_w_net_name = 'two_w_net'
+    two_w_net_name = 'one_w_net'
 
     # y = RELU(x * w1 * w2  + b)
     two_w_net = TwoWeightLinearNet(
@@ -110,13 +109,12 @@ def multi_sparsity_one_weight_linear_net(
 
     for sparsity in sparsity_list:
 
-        two_w_net_folder_path_str = f'src/superposition/weights/two_w/s_{sparsity}'
+        two_w_net_folder_path_str = f'src/superposition/weights/one_w/s_{sparsity}'
 
         folder_path = Path(two_w_net_folder_path_str)
         if not folder_path.exists():
             folder_path.mkdir()
 
-        two_w_net_name = 'two_w_net'
 
         train_lost_list, final_model_state_dict = train_toy_model(
             toy_model=two_w_net,
@@ -138,8 +136,6 @@ def multi_sparsity_two_weight_linear_net(
     n_feat = 20
     n_hidden = 5
 
-    two_w_net_folder_path_str = 'src/superposition/weights/two_w'
-    two_w_net_name = 'two_w_net'
 
     # y = RELU(x * w1 * w2  + b)
     two_w_net = TwoWeightLinearNet(
@@ -187,10 +183,12 @@ if __name__ == "__main__":
         0.999
     ]
 
+    print('one_weight_linear_net')
     multi_sparsity_one_weight_linear_net(
         sparsity_list=sparsity_list
     )
 
+    print('two_weight_linear_net')
     multi_sparsity_two_weight_linear_net(
         sparsity_list=sparsity_list
     )

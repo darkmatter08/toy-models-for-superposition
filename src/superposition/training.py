@@ -2,7 +2,7 @@ import torch
 from torch import Tensor
 
 from jaxtyping import Float 
-from typing import Dict, Tuple, List, Any
+from typing import Dict, Tuple, List, Any, Optional
 
 from tqdm import tqdm
 
@@ -94,7 +94,8 @@ def train_toy_model(
 
     save_model(
         pt_model_state_dict=final_model_state_dict,
-        file_path_str=final_file_path_str
+        file_path_str=final_file_path_str,
+        metadata_dict={"epoch_loss_list": epoch_loss_list }
     )
 
     # save checkpoint
@@ -116,10 +117,14 @@ def mean_weighted_square_error_loss(
 def save_model(
     pt_model_state_dict,
     file_path_str:str,
+    metadata_dict: Optional[
+        Dict[str, Any]
+    ]=None
 ):   
     save_file(
         tensors=pt_model_state_dict,
-        filename=file_path_str
+        filename=file_path_str,
+        metadata=metadata_dict
     )
 
 
