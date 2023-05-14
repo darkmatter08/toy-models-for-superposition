@@ -36,6 +36,7 @@ def train_toy_model(
     returns training_lost_list, 
 
     """
+    toy_model = toy_model.to("cuda")
     optim = torch.optim.AdamW(
         toy_model.parameters(),
         lr=lr,
