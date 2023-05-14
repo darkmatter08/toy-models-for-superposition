@@ -1,12 +1,17 @@
 import torch
 from torch import Tensor
 from jaxtyping import Float 
+from typing import Any
+
 from src.toynet import \
     OneWeightLinearNet, \
     TwoWeightLinearNet 
+
 from src.generate_x import \
     generate_sparse_x_2t
 
+from safetensors import safe_open
+from safetensors.torch import safe_file
 
 def train_toy(
     toy_model,
@@ -72,4 +77,47 @@ def mean_weighted_square_error_loss(
     mw_se_loss_t = w_se_loss_t.mean()
     return mw_se_loss_t
 
+
+def save_model(
+    pt_model,
+    file_path_str:str,
+):   
+    save_file(
+        model,
+        file_path_str
+    )
+
+
+def load_model(
+    pt_model,
+    file_path_str: str
+) -> Dict[str, Any]
+    tensor_dict = {}
+
+    with safe_open(
+        file_path_str,
+        framework='pt',
+        device='cpu'
+    ) as f:
+        for key in f.keys():
+            tensor_dict[key] = f.get_tensor(key)
+
+    return tensor_dict
+
+
+def load_partial_model(
+    pt_model,
+    file_path_str: str,
+    model_key_list: List[str]
+) -> Dict[str, Any]
+    tensor_dict = {}
+    with safe_open(
+        file_path_str,
+        framework='pt',
+        device='cpu'
+    ) as f:
+        for key in model_key_list:
+            tensor_dict[key] = f.get_tensor(key)
     
+    return tensor_dict
+ 
