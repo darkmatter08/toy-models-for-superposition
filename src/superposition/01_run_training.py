@@ -3,7 +3,7 @@ from typing import List
 from pathlib import Path
 
 from src.superposition.training import \
-    train_toy_model, save_model, load_model
+    train_toy_model
 
 from src.superposition.toynet import \
     OneWeightLinearNet, \
