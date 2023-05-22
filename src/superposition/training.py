@@ -55,6 +55,7 @@ def train_toy_model(
             n_data=n_data,
             frac_is_zero=sparsity
         )
+        # sparse_x_2t = (data, feat)
 
         norm_x_2t = normalize_matrix(sparse_x_2t)
 
