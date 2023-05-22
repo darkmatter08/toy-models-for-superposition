@@ -96,7 +96,7 @@ def multi_sparsity_one_weight_linear_net(
     two_w_net_name = 'one_w_net'
 
     # y = RELU(x * w1 * w2  + b)
-    two_w_net = TwoWeightLinearNet(
+    two_w_net = OneWeightLinearNet(
         n_feat=n_feat,
         n_hidden=n_hidden
     )
@@ -188,7 +188,7 @@ if __name__ == "__main__":
         sparsity_list=sparsity_list
     )
 
-    print('two_weight_linear_net')
-    multi_sparsity_two_weight_linear_net(
-        sparsity_list=sparsity_list
-    )
+    # print('two_weight_linear_net')
+    # multi_sparsity_two_weight_linear_net(
+    #     sparsity_list=sparsity_list
+    # )
