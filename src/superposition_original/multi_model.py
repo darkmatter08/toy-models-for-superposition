@@ -75,7 +75,7 @@ class MultiModel(nn.Module):
 
         # no need transpose with einsum method
         feat_map_3t = torch.einsum(
-            "mdh,mfh->mdf" # on 
+            "mdh,mfh->mdf", # on 
             hidden_map_3t,
             self.w_3t
         )
