@@ -44,7 +44,7 @@ class MultiModel(nn.Module):
         nn.init.xavier_normal_(self.w_3t)
         self.b_2t = nn.Parameter(
             torch.zeros(
-                (n_model,n_feat),
+                (n_model, 1 ,n_feat),
                 device=device
             )
         )
@@ -75,12 +75,12 @@ class MultiModel(nn.Module):
 
         # no need transpose with einsum method
         feat_map_3t = torch.einsum(
-            "mdh,mfh->mdf", # on 
+            "dmh,mfh->mdf", # on 
             hidden_map_3t,
             self.w_3t
         )
 
-        # b_2t = (n_model, n_feat)
+        # b_2t = (n_model, 1,  n_feat)
         add_bias = feat_map_3t + self.b_2t
         cut_off = F.relu(add_bias)
 
@@ -92,8 +92,10 @@ def generate_data(
     n_data_point: int,
 
     n_feat: int,
-    feat_prob_t: Float[Tensor, "feat_prob 1"]
-):
+    feat_prob_3t: Float[Tensor, "n_model n_data_point n_feat"]
+) -> Float[
+    Tensor, "n_model n_data_point n_feat"
+]:
 
     x_3t = torch.rand(
         (n_model,
@@ -105,7 +107,7 @@ def generate_data(
     filter_cond_3t = torch.rand(
         (n_model, n_data_point, n_feat),
         device='cuda'
-    ) < feat_prob_t
+    ) <= feat_prob_3t
 
     sparse_x_3t = torch.where(
         filter_cond_3t,

@@ -50,7 +50,7 @@ def optim_multi_model(
     n_model = config_dict['n_model']
     n_data_point = config_dict['n_data_point']
     n_feat = config_dict['n_feat']
-    feat_prob_t = config_dict['feat_prob_t']
+    feat_prob_3t = config_dict['feat_prob_3t']
 
     start = time.time()
     with trange(total_step) as range_step:
@@ -64,12 +64,12 @@ def optim_multi_model(
                 n_model=n_model, 
                 n_data_point=n_data_point,
                 n_feat=n_feat,
-                feat_prob_t=feat_prob_t
+                feat_prob_3t=feat_prob_3t
                 )
 
             pred_3t = multi_model(x_3t)
             weighted_mean_sqr_error_3t = (
-                config_dict['feat_weight_1t'] * 
+                config_dict['feat_weight_3t'] * 
                 (x_3t.abs() - pred_3t.abs()) ** 2
             )
 
@@ -109,6 +109,7 @@ def train_multi_model():
     n_feat = 5
     n_hidden = 2
     n_model = 10
+    n_data_point = 1024
 
     save_multi_model_path_str = (
         'src/superposition_original/weights/multi_model.pth'
@@ -120,25 +121,29 @@ def train_multi_model():
         n_hidden=n_hidden
     )
 
-    feat_weight_t = (
+    feat_weight_3t = (
         0.9 ** torch.arange(n_feat)
-    )[None, :]
+    )[None, None, :]
     # [0.9**0, 0.9**1, 0.9**2, ... ]
-    # shape: (n_feat, 1)
+    # shape: (1, 1, n_feat)
+    # to match (model, data_point, feat)
 
-    feat_prob_t= (
+    feat_weight_3t = feat_weight_3t.to("cuda")
+
+    feat_prob_3t= (
         20 ** -torch.linspace(0, 1, n_model)
-    )[None, :]
+    )[:, None, None]
     # [20 **-0, 20 **-1, ... ]
-    # shape: (1, n_model)
+    # shape: (n_model, 1, 1)
+    feat_prob_3t = feat_prob_3t.to('cuda')
 
     config_dict = {
         'n_model': n_model,
         'n_feat': n_feat,
         'n_hidden': n_hidden,
-
-        'feat_weight_t': feat_weight_t,
-        'feat_prob_t': feat_prob_t,
+        'n_data_point': n_data_point,
+        'feat_weight_3t': feat_weight_3t,
+        'feat_prob_3t': feat_prob_3t,
     }
 
     final_multi_model = optim_multi_model(
