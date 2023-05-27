@@ -26,6 +26,39 @@ def save_model(
     )
 
 
+def save_tensor_dict(
+    tensor_dict,
+    file_path_str:str,
+):   
+
+    file_path = Path(file_path_str)
+    folder_path = file_path.parent
+
+    if not folder_path.exists():
+        folder_path.mkdir()
+
+    save_file(
+        tensors=tensor_dict,
+        filename=file_path_str,
+    )
+
+
+def load_tensor_dict(
+    file_path_str: str
+) -> Dict[str, Any]:
+    tensor_dict = {}
+
+    with safe_open(
+        file_path_str,
+        framework='pt',
+        device='cpu'
+    ) as f:
+        for key in f.keys():
+            tensor_dict[key] = f.get_tensor(key)
+
+    return tensor_dict
+
+
 def load_model(
     file_path_str: str
 ) -> Dict[str, Any]:
@@ -77,3 +110,10 @@ def load_dict_from_json(
         data_dict = json.load(f)
     return data_dict
 
+if __name__ == "__main__":
+    save_tensor_dict(
+        tensor_dict={
+            "test": 1
+        },
+        file_path_str='src/superposition_original/test.safetensors'
+    )
