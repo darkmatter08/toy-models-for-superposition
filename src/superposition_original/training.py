@@ -11,7 +11,10 @@ from src.superposition_original.multi_model import \
 from src.model_io import \
     save_model
 
-from pathlib import Path
+from src.superposition_original.data_structure.multi_model import \
+    MultiModelConfig, \
+    SuperPositionOriginal
+
 
 def linear_lr(
     step:int, 
@@ -33,9 +36,8 @@ def cosine_decay_lr(
 
 def optim_multi_model(
     multi_model,
-    config_dict,
+    model_config: MultiModelConfig,
     render=False,
-    n_data_point=1024,
     total_step=10_000,
     print_freq=100,
     lr=1e-3,
@@ -47,10 +49,12 @@ def optim_multi_model(
         lr=lr
     )
 
-    n_model = config_dict['n_model']
-    n_data_point = config_dict['n_data_point']
-    n_feat = config_dict['n_feat']
-    feat_prob_3t = config_dict['feat_prob_3t']
+    n_model = model_config.n_model
+    n_data_point = model_config.n_data_point
+    n_feat = model_config.n_feat
+
+    feat_prob_3t = model_config.feat_prob_3t.to("cuda")
+    feat_weight_3t = model_config.feat_weight_3t.to("cuda") 
 
     start = time.time()
     with trange(total_step) as range_step:
@@ -69,7 +73,7 @@ def optim_multi_model(
 
             pred_3t = multi_model(x_3t)
             weighted_mean_sqr_error_3t = (
-                config_dict['feat_weight_3t'] * 
+                feat_weight_3t * 
                 (x_3t.abs() - pred_3t.abs()) ** 2
             )
 
@@ -104,16 +108,12 @@ def optim_multi_model(
     return multi_model
 
 
-def train_multi_model():
-
-    n_feat = 5
-    n_hidden = 2
-    n_model = 10
-    n_data_point = 1024
-
-    save_multi_model_path_str = (
-        'src/superposition_original/weights/multi_model.pth'
-    )
+def train_multi_model(
+    model_config: MultiModelConfig
+):
+    n_feat = model_config.n_feat
+    n_hidden = model_config.n_hidden
+    n_model = model_config.n_model
 
     multi_model = MultiModel(
         n_feat=n_feat,
@@ -121,41 +121,20 @@ def train_multi_model():
         n_hidden=n_hidden
     )
 
-    feat_weight_3t = (
-        0.9 ** torch.arange(n_feat)
-    )[None, None, :]
-    # [0.9**0, 0.9**1, 0.9**2, ... ]
-    # shape: (1, 1, n_feat)
-    # to match (model, data_point, feat)
-
-    feat_weight_3t = feat_weight_3t.to("cuda")
-
-    feat_prob_3t= (
-        20 ** -torch.linspace(0, 1, n_model)
-    )[:, None, None]
-    # [20 **-0, 20 **-1, ... ]
-    # shape: (n_model, 1, 1)
-    feat_prob_3t = feat_prob_3t.to('cuda')
-
-    config_dict = {
-        'n_model': n_model,
-        'n_feat': n_feat,
-        'n_hidden': n_hidden,
-        'n_data_point': n_data_point,
-        'feat_weight_3t': feat_weight_3t,
-        'feat_prob_3t': feat_prob_3t,
-    }
-
     final_multi_model = optim_multi_model(
         multi_model=multi_model,
-        config_dict=config_dict,
+        model_config=model_config,
     )
 
     save_model(
         pt_model_state_dict=final_multi_model.state_dict(),
-        file_path_str=save_multi_model_path_str,
+        file_path_str=model_config.weights_file_path_str
     )
 
-
 if __name__ == "__main__":
-    train_multi_model()
+    all_model = SuperPositionOriginal()
+    small_two_hidden_model = all_model.small_two_hidden_model
+
+    train_multi_model(
+        model_config=small_two_hidden_model
+    )
