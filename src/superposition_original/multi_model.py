@@ -62,7 +62,7 @@ class MultiModel(nn.Module):
         # feat_3t: [n_model, n_data_points, n_feat]
         # self.w_3t: [n_model, n_feat, n_hidden]
 
-        # ops: RELU(x * w * w_T  + b)
+        # multi_model: y = RELU(x * w * w_T  + b)
         
         hidden_map_3t = torch.einsum(
             "mdf,mfh->dmh", # on feat
