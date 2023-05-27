@@ -2,4 +2,5 @@
 **/*.pyc
 **/*.pt
 **/*.json
+docs/
 venv/
