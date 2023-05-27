@@ -92,10 +92,13 @@ def generate_data(
     n_data_point: int,
 
     n_feat: int,
-    feat_prob_3t: Float[Tensor, "n_model n_data_point n_feat"]
+    feat_prob_3t: Float[Tensor, "n_model n_data_point n_feat"],
+
+    SEED:int=0
 ) -> Float[
     Tensor, "n_model n_data_point n_feat"
 ]:
+    torch.manual_seed(SEED)
 
     x_3t = torch.rand(
         (n_model,
