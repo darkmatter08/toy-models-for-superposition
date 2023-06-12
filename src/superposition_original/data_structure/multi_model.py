@@ -19,6 +19,9 @@ class MultiModelConfig(BaseModel):
     # the probability of a feature being non zero 
 
     weights_file_path_str: str
+    
+    class Config:
+        arbitrary_types_allowed=True
 
 class SuperPositionOriginal(BaseModel):
     small_two_hidden_model=MultiModelConfig(
@@ -45,7 +48,7 @@ class SuperPositionOriginal(BaseModel):
         feat_weight_3t=( 100 ** -torch.linspace(0, 1, 100))[None, None, :],
         # feat_weight_3t=( 100 ** torch.linspace(0, 1, n_feat))[None, None, :],
 
-        feat_prob_3t= ( 20 ** -torch.linspace(0, 1, 10))[:, None, None],
+        feat_prob_3t= ( 20 ** -torch.linspace(0, 1, 20))[:, None, None],
         # feat_prob_3t= ( 20 ** -torch.linspace(0, 1, n_model))[:, None, None],
 
         weights_file_path_str="src/superposition_original/weights/medium_100_to_20_model.safetensors"
@@ -57,10 +60,10 @@ class SuperPositionOriginal(BaseModel):
         n_feat = 200,
         n_hidden = 20,
 
-        feat_weight_3t=( 1 ** torch.arange(100))[None, None, :],
-        # feat_weight_3t=( 1 * torch.arange(100))[None, None, :],
+        feat_weight_3t=( 1 ** torch.arange(200))[None, None, :],
+        # feat_weight_3t=( 1 * torch.arange(n_feat))[None, None, :],
         # equal weight model
-        feat_prob_3t= ( 20 ** -torch.linspace(0, 1, 10))[:, None, None],
+        feat_prob_3t= ( 20 ** -torch.linspace(0, 1, 20))[:, None, None],
         # feat_prob_3t= ( 20 ** -torch.linspace(0, 1, n_model))[:, None, None],
 
         weights_file_path_str="src/superposition_original/weights/constant_feat_weight_model.safetensors"

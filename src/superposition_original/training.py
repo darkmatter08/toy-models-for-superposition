@@ -133,8 +133,19 @@ def train_multi_model(
 
 if __name__ == "__main__":
     all_model = SuperPositionOriginal()
-    small_two_hidden_model = all_model.small_two_hidden_model
 
+    small_two_hidden_model = all_model.small_two_hidden_model
     train_multi_model(
         model_config=small_two_hidden_model
     )
+
+    medium_model = all_model.medium_model
+    train_multi_model(
+        model_config=medium_model
+    )
+
+    const_feat_weight_model = all_model.constant_feat_weight_model
+    train_multi_model(
+        model_config=const_feat_weight_model
+    )
+ 
