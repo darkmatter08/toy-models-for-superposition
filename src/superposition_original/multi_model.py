@@ -42,7 +42,7 @@ class MultiModel(nn.Module):
         )
 
         nn.init.xavier_normal_(self.w_3t)
-        self.b_2t = nn.Parameter(
+        self.b_3t = nn.Parameter(
             torch.zeros(
                 (n_model, 1 ,n_feat),
                 device=device
@@ -80,8 +80,8 @@ class MultiModel(nn.Module):
             self.w_3t
         )
 
-        # b_2t = (n_model, 1,  n_feat)
-        add_bias = feat_map_3t + self.b_2t
+        # b_3t = (n_model, 1,  n_feat)
+        add_bias = feat_map_3t + self.b_3t
         cut_off = F.relu(add_bias)
 
         return cut_off
