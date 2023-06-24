@@ -44,6 +44,9 @@ def plot_hidden_dims_per_feature(
         1,1,
         figsize=(20,10)
     )
+
+    ax.set_title(f'Const Feature Importance Model: N hidden dim / successful_embedded_num_features')
+
     ax.set_yticks(np.arange(0,1.1,0.1))
     ax.set_xscale('log') 
     ax.plot(
