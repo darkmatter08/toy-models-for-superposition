@@ -72,7 +72,7 @@ def matplotlib_superposition(
         w_3t
     ).cpu()
 
-    b_3t = model_state_dict['b_2t'].detach()
+    b_3t = model_state_dict['b_3t'].detach()
     # (n_model, 1, n_feat)
     b_3t = b_3t.view(n_model, n_feat, 1)
 
@@ -146,7 +146,7 @@ def matplotlib_superposition(
         ax.set_title(f'Model {inst}, sparsity:{sparsity}')
 
         plt.savefig(
-            f'src/superposition_original/viz/03_{inst}_feat_superposition.png'
+            f'src/superposition_original/viz/02_{inst}_feat_superposition.png'
         )
 
 
