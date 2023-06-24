@@ -44,7 +44,7 @@ def plot_hidden_dims_per_feature(
         1,1,
         figsize=(20,10)
     )
-
+    ax.set_yticks(np.arange(0,1.1,0.1))
     ax.set_xscale('log') 
     ax.plot(
         x,
@@ -53,6 +53,7 @@ def plot_hidden_dims_per_feature(
     )
 
     ax.grid()
+
     plt.savefig(
         f'src/superposition_original/viz/03_hidden_dim_per_feat_vs_sparsity.png'
         )
