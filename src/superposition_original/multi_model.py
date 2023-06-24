@@ -75,7 +75,7 @@ class MultiModel(nn.Module):
 
         # no need transpose with einsum method
         feat_map_3t = torch.einsum(
-            "dmh,mfh->mdf", # on 
+            "dmh,mfh->mdf", #  on n_hidden, -> (n_model, n_data, n_feat)
             hidden_map_3t,
             self.w_3t
         )
@@ -98,7 +98,7 @@ def generate_data(
 ) -> Float[
     Tensor, "n_model n_data_point n_feat"
 ]:
-    torch.manual_seed(SEED)
+    # torch.manual_seed(SEED)
 
     x_3t = torch.rand(
         (n_model,
