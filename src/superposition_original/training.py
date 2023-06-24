@@ -70,16 +70,18 @@ def optim_multi_model(
                 n_feat=n_feat,
                 feat_prob_3t=feat_prob_3t
                 )
+            # (n_model, n_data, n_feat )
 
             pred_3t = multi_model(x_3t)
+
             weighted_mean_sqr_error_3t = (
                 feat_weight_3t * 
-                (x_3t.abs() - pred_3t.abs()) ** 2
+                (x_3t - pred_3t) ** 2
             )
 
             loss = einops.reduce(
                 weighted_mean_sqr_error_3t,
-                'm d f -> d',
+                'm d f -> m', # (n_model, n_data, n_feat) -> Weighted MSE for each model -> (n_model,)
                 'mean'
             ).sum()
 
@@ -134,15 +136,15 @@ def train_multi_model(
 if __name__ == "__main__":
     all_model = SuperPositionOriginal()
 
-    small_two_hidden_model = all_model.small_two_hidden_model
-    train_multi_model(
-        model_config=small_two_hidden_model
-    )
+    # small_two_hidden_model = all_model.small_two_hidden_model
+    # train_multi_model(
+    #     model_config=small_two_hidden_model
+    # )
 
-    medium_model = all_model.medium_model
-    train_multi_model(
-        model_config=medium_model
-    )
+    # medium_model = all_model.medium_model
+    # train_multi_model(
+    #     model_config=medium_model
+    # )
 
     const_feat_weight_model = all_model.constant_feat_weight_model
     train_multi_model(
