@@ -60,7 +60,8 @@ class SuperPositionOriginal(BaseModel):
         n_feat = 200,
         n_hidden = 20,
 
-        feat_weight_3t=( 1 ** torch.arange(200))[None, None, :],
+        feat_weight_3t= torch.ones(()),
+        # ( 1 ** torch.arange(200))[None, None, :],
         # feat_weight_3t=( 1 * torch.arange(n_feat))[None, None, :],
         # equal weight model
         feat_prob_3t= ( 20 ** -torch.linspace(0, 1, 20))[:, None, None],
