@@ -32,6 +32,6 @@ Thus the neural network can only learn 4 features
 and thus only learns Top-4 features from data  
 
 But when Superposition happens, the neural network will  
-can arrange features like a windmill,  
+arrange vector features into a windmill structure like roots of unity,  
 squeezing 5 features(2pi/5 angle) or 8 features(2pi/8)  
 onto 2d XY space.
