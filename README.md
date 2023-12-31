@@ -76,35 +76,57 @@ The network is trained using different sparsity levels:
 0.7 = only 30% of the time a feature appears  
   
 ## Results
-For the first model, One Weight Linear Net, it is expected the multiplication of w1 and w1.T  
-will be an identity matrix as the training is aiming for y = x, input = output  
+For the One Weight Linear Net, it is expected the multiplication of w1 and w1.T  
+will be an identity matrix as the training is aiming for arg min mse =  (y - x) ^ 2 , input = output  
 
 Similarly for the second model, Two Weight Linear Net, the multiplication of w1 and w2  
 should also be an identity matrix
 
-Both the identity matrices for two models are visualized below:  
-
-One Weight Linear Net:  
-1. The following chart is a visualization of  
-square box = w1 * w1.T = (num_of_feat, num_of_middle) * (num_of_middle, num_of_feat) = (num_of_feat, num_of_feat)
-single column = b  
-accross different sparsity levels: 1-S = 0.1 means only 10% of the features appear at a time.    
-White = zero,  
+If we count the diagonals of the multiplication of w1 and w1.T, we can know how many features were learned.
+So we will visualize the middle matrices for both models and their bias term b.  
+  
+1. One Weight Linear Net:  
+each square box = w1 * w1.T = (num_of_feat, num_of_middle) * (num_of_middle, num_of_feat) = (num_of_feat, num_of_feat)  
+each column = bias vector = bias = (num_of_feat,)   
+accross different sparsity levels: 1-S = 0.1 means only 10% of the features appear at a time.  
+White = Zero value, 0  
 Blue = positive value 1.3,  
 Red = negative value -1.3  
   
 ![One Weight Linear Net Image](src/superposition/viz/03_all_sparsity_one_weight.png)  
   
-On the left, when data is not sparse and all features appear, the network only learned the identity matrix.  
-where the middle diagonals are all blue. The bias is also positive except for biases for the identity which is zero.  
-The left most chart only learns 4 out of 20 input features as the rest of the matrices are white(empty). 
-
-As sparsity increases, towards the right, the matrix become more negative as red appears. This represents some superposition.   
+On the left, when data is not sparse and all features appear, the network only learned the identity matrix   
+where the middle 4 diagonals are all blue. This means only 4 out of 20 input features where learned as the rest of the matrices are white(empty).  
+The bias is positive for the 16 features that are not learned. 
+For these 16 features, the network always predicts they exist eventhough they may not.  
+  
+Going towards the right, sparsity increases to 99.9%, the matrices become more red. This represents some superposition.  
 The bias also becomes negative to offset some correlated features.  
+  
+The right most chart learns almost 18 out of 20 input features when sparsity is 0.001.  
 
-The right most chart learns almost 18 out of 20 input features when sparsity is 0.001
+2. Two Weight Linear Net:  
+each square box = w1 * w2 = (num_of_feat, num_of_middle) * (num_of_middle, num_of_feat) = (num_of_feat, num_of_feat)  
+each column = bias vector = bias = (num_of_feat,)   
+accross different sparsity levels: 1-S = 0.1 means only 10% of the features appear at a time.  
+White = Zero value, 0  
+Blue = positive value 1.3,  
+Red = negative value -1.3  
+  
+![Two Weight Linear Net Image](src/superposition/viz/03_all_sparsity_two_weight.png)  
+  
+On the left, when data is not sparse and all features appear, the network only learned the identity matrix   
+where the middle 4 diagonals are all blue. This means only 4 out of 20 input features where learned as the rest of the matrices are white(empty).  
+The bias is positive for the 16 features that are not learned. 
+For these 16 features, the network always predicts they exist eventhough they may not.  
+  
+Going towards the right, sparsity increases to 99.9%, the matrices become more red. This represents some superposition.  
+The bias also becomes negative to offset some correlated features.  
+  
+The right most chart learns almost 18 out of 20 input features when sparsity is 0.001.  
 
-This repo shows that if two conditions:  
+
+This repo shows that if two conditions:   
 1. features are sparse,  
 2. and RELU cut off is used  
   
