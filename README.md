@@ -1,10 +1,9 @@
 # Toy Models for Superposition
-This is a PARTIAL replication of the results from:  
+This repo PARTIALLY replicates some important results from:  
 https://transformer-circuits.pub/2022/toy_model/index.html  
   
-This simple model shows how an linear encoder decoder neural network works.  
-Linear encoder/decoder structures form MLP layers in Transformers and other classification tasks.  
-A good understanding of their interaction with data sparsity and non linear activation layers like RELU is important for understanding how AI works.  
+The repo focus on a simple linear encoder decoder neural network which forms MLP layers in Transformers and are commonly used as the last layer for classification tasks.  
+A good theory of how linear encoder decoder layers interact with data sparsity and non linear activation layers like RELU is important for understanding how AI works.  
 
 # INSTALL
 ```
@@ -20,8 +19,9 @@ pip install -r requirements.txt
 Question:  
 Given a simple AI model:  
 1.  y = decoder(encoder(x))  
-so that y = x  
-  
+so that loss = mse_loss(y, x)  
+we want this model to predict the identity matrix that maps x to y
+   
 2. where the encode will reduce the dimension of the features from:  
 num_of_feat to num_of_middle   
   
@@ -30,7 +30,7 @@ num_of_middle to num_of_feat
 
 4. num_of_feat > num_of_middle  
 
-Under what conditions will the AI be able to predict y = x
+Under what conditions will the AI be able to map x to y like the identity matrix  
 which means it can learn more features then the num_of_middle neurons? 
 Thus achieving Superposition of features onto middle neurons?  
   
@@ -42,17 +42,22 @@ When the following two conditions are met:
 The next section will explain the setup to test the above results.  
   
 ## Setup
-Build a network that outputs same feature vectors as inputs:  
+1. Build two network that outputs same feature vectors as inputs:  
 y = f(x)  
-x = (num_of_data_points, num_of_feat)  
+x = (num_of_data_points, num_of_feat) = randomly generated and normalized to unit vector  
 y = (num_of_data_points, num_of_feat)  
-loss = mse(x, y)
+
+2. minimize loss = mse_loss(x, y) using Adam optimizer.  
+  
+3. vary the sparsity of the data and plot the results.  
 
 see ![generate_x.py](src/superposition/generate_x.py) on how data is generated.  
 see ![toynet.py](src/superposition/toynet.py) on two models tested.  
 see ![01_run_training.py](src/superposition/01_run_training.py) to train the two model. model was trained on RTX3060.  
 see ![02_viz_weights.py](src/superposition/02_viz_weights.py) to visualize weights of the model.  
-
+  
+## AI Networks
+  
 1. One Weight Linear Net  
   
     y = RELU(x * w1 * w1.T + b)  
@@ -78,21 +83,20 @@ constrained the decoder to use transposed of w1
              b.shape = (num_of_feat, )
 
 The network is trained using different sparsity levels:  
-[0, 0.7, 0.9, 0.99, 0.999]  
+sparsity_list = [0, 0.7, 0.9, 0.99, 0.999]  
 0 = 100% of the the time a features appears  
 0.7 = only 30% of the time a feature appears  
   
-Both models were trained till MSE loss converged.
+Both models were trained till MSE loss converged.  
 
 ## Results
 For the One Weight Linear Net, it is expected the multiplication of w1 and w1.T  
-will be an identity matrix as the training is aiming for arg min mse =  (y - x) ^ 2 , input = output  
+will be an identity matrix as the training is aiming for arg min mse = mean (y - x) ^ 2 , where input x = output y.  
 
-Similarly for the second model, Two Weight Linear Net, the multiplication of w1 and w2  
-should also be an identity matrix
+Similarly for the second model, Two Weight Linear Net, the multiplication of w1 and w2 should also be an identity matrix.  
 
 If we count the diagonals of the multiplication of w1 and w1.T, we can know how many features were learned.
-So we will visualize the middle matrices for both models and their bias term b.  
+So we will visualize the square matrices = w1 * w1.T and w1 * w2  and their respective bias term b.  
   
 1. One Weight Linear Net:  
 each square box = w1 * w1.T = (num_of_feat, num_of_middle) * (num_of_middle, num_of_feat) = (num_of_feat, num_of_feat)  
