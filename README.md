@@ -77,11 +77,22 @@ The network is trained using different sparsity levels:
   
 ## Results
 One Weight Linear Net:  
-1. The following chart is a visualization of 
-square box = w1 * w1.T 
-single column = b
-accross different sparsity levels
-![One Weight Linear Net Image](src/superposition/viz/03_all_sparsity_one_weight.png)
+1. The following chart is a visualization of  
+square box = w1 * w1.T  
+single column = b  
+accross different sparsity levels: 1-S = 0.1 means only 10% of the features appear at a time.    
+White = zero,  
+Blue = positive value 1.3,  
+Red = negative value -1.3  
+![One Weight Linear Net Image](src/superposition/viz/03_all_sparsity_one_weight.png)  
+  
+On the left, when data is not sparse and all features appear, the network only learn the identity matrix  
+where the middle diagonals are all blue. The bias is also positive except for biases for the identity which is zero.  
+   
+As sparsity increases, towards the right, the matrix become more negative as red appears. This represents some superposition.   
+The bias also becomes negative to offset some correlated features.  
+
+2. 
 
 
 This repo shows that if two conditions:  
