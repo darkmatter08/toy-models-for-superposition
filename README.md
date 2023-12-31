@@ -90,8 +90,8 @@ each square box = w1 * w1.T = (num_of_feat, num_of_middle) * (num_of_middle, num
 each column = bias vector = bias = (num_of_feat,)   
 accross different sparsity levels: 1-S = 0.1 means only 10% of the features appear at a time.  
 White = Zero value, 0  
-Blue = positive value 1.3,  
-Red = negative value -1.3  
+Blue = positive value  
+Red = negative value  
   
 ![One Weight Linear Net Image](src/superposition/viz/03_all_sparsity_one_weight.png)  
   
@@ -110,21 +110,17 @@ each square box = w1 * w2 = (num_of_feat, num_of_middle) * (num_of_middle, num_o
 each column = bias vector = bias = (num_of_feat,)   
 accross different sparsity levels: 1-S = 0.1 means only 10% of the features appear at a time.  
 White = Zero value, 0  
-Blue = positive value 1.3,  
+Blue = positive value 1.3  
 Red = negative value -1.3  
   
 ![Two Weight Linear Net Image](src/superposition/viz/03_all_sparsity_two_weight.png)  
   
-On the left, when data is not sparse and all features appear, the network only learned the identity matrix   
-where the middle 4 diagonals are all blue. This means only 4 out of 20 input features where learned as the rest of the matrices are white(empty).  
-The bias is positive for the 16 features that are not learned. 
-For these 16 features, the network always predicts they exist eventhough they may not.  
+The main difference between the Two Weight Linear Net and the transposed One Weight Linear Net is that the red values  
+cluster towards the upper diagonal when sparsity increases from left to right.  
   
-Going towards the right, sparsity increases to 99.9%, the matrices become more red. This represents some superposition.  
-The bias also becomes negative to offset some correlated features.  
+The right most chart learns all of the 20 input features when sparsity is 0.001.  
   
-The right most chart learns almost 18 out of 20 input features when sparsity is 0.001.  
-
+# Conclusion
 
 This repo shows that if two conditions:   
 1. features are sparse,  
