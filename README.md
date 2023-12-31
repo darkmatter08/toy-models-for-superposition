@@ -138,7 +138,7 @@ For the Two Weight Linear Net, it is possible that tenary encoding is happening 
 This is 243 slots for 20 features.
 So the Two Weight Linear Net has more capacity.
 
-More research is needed to look into the weights.
+More research is needed to look into the weights of 5 middle neurons.
 
 # Conclusion
 
@@ -146,26 +146,23 @@ This repo shows that if two conditions:
 1. features are sparse,  
 2. and RELU cut off is used  
   
-The neural network will entangle these features such that when one feature is detected,   
-it will cause a set of entangled features to also be detected.  
+The neural network will entangle these features such that when one feature is detected, it will cause a set of entangled features to also be detected.  
 
-The activation function will cut off the weaker features  
-and only allow few strong features to pass through.  
-Here feature strength is measured by the magnitude of the vector.  
+The activation function will cut off the weaker features and only allow few strong features to pass through.  
+Here feature strength is measured by the value of the matrix item.  
 
-Normally, without 2 conditions above, in an 2D XY space, you can represent:  
-at most 4 features in the direction positive X, negative X, positive Y and negative Y directions  
-Thus the neural network can only learn 4 features which are 90 degrees apart  
-and thus only learns Top-4 weighted features from data  
-
-But when Superposition happens, the neural network will  
-arrange vector features into a windmill structure like roots of unity,  
-squeezing 5 features(2pi/5 angle) or 8 features(2pi/8)  
-onto 2d the XY space.  
+Normally, with 5 neurons you can represent at most 5 features each with one hot encoding.  
   
-So when a feature is detected, since the vector features are not 90 degrees(orthogonal)  
-another correlated features at the side will also fire  
-but since the features are sparse, it is unlikely that both fired at the same time in reality  
-the RELU will cut it off which allows the network to squeeze more features  
-resulting in angles between features to be < 90 degrees (non independent)  
- 
+feature 1 = (1,0,0,0,0) 
+feature 2 = (0,1,0,0,0) 
+feature 3 = (0,0,1,0,0) 
+feature 4 = (0,0,0,1,0) 
+feature 5 = (0,0,0,0,1) 
+
+But with sparsity and RELU, the neural network will learn different encoding schemes which are correlated.  
+  
+So when a feature is detected, another correlated features on the same row will also fire.  
+But since the features are sparse, it is unlikely that both fired at the same time in reality.  
+The RELU will cut off the negative value features resulting in correct encoding and decoding.  
+
+This allows the 5 neurons to pack more than 5 features inside. 
