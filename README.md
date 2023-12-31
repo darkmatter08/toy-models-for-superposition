@@ -46,7 +46,9 @@ loss = mse(x, y)
 
 see ![generate_x.py](src/superposition/generate_x.py) on how data is generated.  
 see ![toynet.py](src/superposition/toynet.py) on two models tested.  
-  
+see ![01_run_training.py](src/superposition/01_run_training.py) to train the two model. model was trained on RTX3060.
+see ![02_viz_weights.py](src/superposition/02_viz_weights.py) to visualize weights of the model.  
+
 1. One Weight Linear Net  
   
     y = RELU(x * w1 * w1.T + b)  
