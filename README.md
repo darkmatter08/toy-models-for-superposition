@@ -12,8 +12,64 @@ https://transformer-circuits.pub/2022/toy_model/index.html
 
 # Summary
 ## Superposition
-Assume features are vectors.  
+
+Question:  
+Given a simple AI model:  
+1.  y = decoder(encoder(x))  
+so that y = x  
   
+2. where the encode will reduce the dimension of the features from:  
+num_of_feat to num_of_middle   
+  
+3. the decoder will reverse from:  
+num_of_middle to num_of_feat
+
+4. num_of_feat > num_of_middle  
+
+Under what conditions will the AI be able to predict y = x
+which means it can learn more features then the num_of_middle neurons? 
+  
+Answer: 
+When the following two conditions are met:  
+1. features are sparse,  
+2. and RELU cut off is used  
+  
+The next section will explain the setup to test the above results.  
+  
+## Setup
+Build a network that outputs same feature vectors as inputs:  
+y = f(x)  
+x = (num_of_data_points, num_of_feat)  
+y = (num_of_data_points, num_of_feat)  
+
+Two networks are tested:  
+src/superposition/toynet.py  
+  
+1. One Weight Linear Net  
+  
+    y = RELU(x * w1 * w1.T + b)  
+    
+    num_of_feat = 20  
+    num_of_middle = 5  
+  
+    w1.shape = (num_of_feat, num_of_middle)  
+    w1.T.shape = (num_of_middle, num_of_feat)  
+    b.shape = (num_of_feat, )  
+  
+constrained the decoder to use transposed of w1  
+  
+2. Two Weights Linear Net     
+  
+    y = RELU(x * w1 * w2 + b)  
+  
+    num_of_feat = 20  
+    num_of_middle = 5  
+  
+    w1.shape = (num_of_feat, num_of_middle)  
+    w2.shape = (num_of_middle, num_of_feat)  
+    b.shape = (num_of_feat, )
+
+## Results
 This repo shows that if two conditions:  
 1. features are sparse,  
 2. and RELU cut off is used  
@@ -27,11 +83,17 @@ and only allow few strong features to pass through.
 Here feature strength is measured by the magnitude of the vector.  
 
 Normally, without 2 conditions above, in an 2D XY space, you can represent:  
-at most 4 features in the direction positive X, negative X, positive Y and negative Y  
-Thus the neural network can only learn 4 features  
-and thus only learns Top-4 features from data  
+at most 4 features in the direction positive X, negative X, positive Y and negative Y directions  
+Thus the neural network can only learn 4 features which are 90 degrees apart  
+and thus only learns Top-4 weighted features from data  
 
 But when Superposition happens, the neural network will  
 arrange vector features into a windmill structure like roots of unity,  
 squeezing 5 features(2pi/5 angle) or 8 features(2pi/8)  
-onto 2d XY space.
+onto 2d the XY space.  
+  
+So when a feature is detected, since the vector features are not 90 degrees(orthogonal)  
+another correlated features at the side will also fire  
+but the RELU will cut it off which allows the network to squeeze more features  
+resulting in angles between features to be < 90 degrees (non independent)  
+ 
