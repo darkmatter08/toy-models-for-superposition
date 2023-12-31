@@ -28,6 +28,7 @@ num_of_middle to num_of_feat
 
 Under what conditions will the AI be able to predict y = x
 which means it can learn more features then the num_of_middle neurons? 
+Thus achieving Superposition of features onto middle neurons?  
   
 Answer: 
 When the following two conditions are met:  
@@ -73,8 +74,16 @@ The network is trained using different sparsity levels:
 [0, 0.7, 0.9, 0.99, 0.999]  
 0 = 100% of the the time a features appears  
 0.7 = only 30% of the time a feature appears  
-
+  
 ## Results
+One Weight Linear Net:  
+1. The following chart is a visualization of 
+square box = w1 * w1.T 
+single column = b
+accross different sparsity levels
+(src/viz/03_all_sparsity_one_weight.png)
+
+
 This repo shows that if two conditions:  
 1. features are sparse,  
 2. and RELU cut off is used  
