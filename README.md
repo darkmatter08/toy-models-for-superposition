@@ -1,3 +1,11 @@
+# Toy Models for Superposition
+This is a replication of the results from: 
+https://transformer-circuits.pub/2022/toy_model/index.html
+
+This simple model shows how an linear encoder decoder neural network works.  
+Linear encoder/decoder structures form MLP layers in Transformers and other classification tasks.  
+A good understanding of their interaction with data sparsity and non linear activation layers like RELU is important for understanding how AI works.  
+
 # INSTALL
 ```
 pyenv install 3.8.10
@@ -5,10 +13,6 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
-
-# Toy Models for Superposition
-This is a replication of the results from: 
-https://transformer-circuits.pub/2022/toy_model/index.html
 
 # Summary
 ## Superposition
