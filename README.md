@@ -75,6 +75,8 @@ The network is trained using different sparsity levels:
 0 = 100% of the the time a features appears  
 0.7 = only 30% of the time a feature appears  
   
+Both models were trained till MSE loss converged.
+
 ## Results
 For the One Weight Linear Net, it is expected the multiplication of w1 and w1.T  
 will be an identity matrix as the training is aiming for arg min mse =  (y - x) ^ 2 , input = output  
@@ -95,12 +97,18 @@ Red = negative value
   
 ![One Weight Linear Net Image](src/superposition/viz/03_all_sparsity_one_weight.png)  
   
-On the left, when data is not sparse and all features appear, the network only learned the identity matrix   
-where the middle 4 diagonals are all blue. This means only 4 out of 20 input features where learned as the rest of the matrices are white(empty).  
-The bias is positive for the 16 features that are not learned. 
-For these 16 features, the network always predicts they exist eventhough they may not.  
+On the left, when data is not sparse and all features appear, the network only learned the identity matrix where the middle 5 diagonals are all blue. 
+This means only 5 out of 20 input features where learned as the rest of the matrices are white(empty). 
   
-Going towards the right, sparsity increases to 99.9%, the matrices become more red. This represents some superposition.  
+The bias is positive for the 15 features that are not learned. 
+For these 15 features, the network always predicts they exist via the positive bias even though they may not.  
+  
+Going towards the right, sparsity increases to 99.9%, the matrices become more red.   
+  
+Note: Each row of the square represent one input features, and the columns of each row are the output features.  
+So if input x has feature on the first row, it also fires up other features along the columns of the row.  
+This represents some Superposition as the network is using num_of_middle neurons = 5 to try to represent more than 5 features.
+  
 The bias also becomes negative to offset some correlated features.  
   
 The right most chart learns almost 18 out of 20 input features when sparsity is 0.001.  
@@ -115,19 +123,30 @@ Red = negative value -1.3
   
 ![Two Weight Linear Net Image](src/superposition/viz/03_all_sparsity_two_weight.png)  
   
-The main difference between the Two Weight Linear Net and the transposed One Weight Linear Net is that the red values  
-cluster towards the upper diagonal when sparsity increases from left to right.  
+The main difference between the Two Weight Linear Net and the transposed One Weight Linear Net is that the red values cluster towards the upper diagonal when sparsity increases from left to right.  
   
 The right most chart learns all of the 20 input features when sparsity is 0.001.  
+
+# Postulate
+How can 5 neurons represent 20 features?
+if we use binary encoding, we can have 2 ^ 5 values if we have 5 slots.  
+This is 32 slots for 20 features.  
   
+Superposition may be representing 32 features in some mixture of binary encoding and normal encoding where 1 neuron slot = 1 features.  
+
+For the Two Weight Linear Net, it is possible that tenary encoding is happening with -1, 0, 1 values in the middle 5 neurons.  
+This is 243 slots for 20 features.
+So the Two Weight Linear Net has more capacity.
+
+More research is needed to look into the weights.
+
 # Conclusion
 
 This repo shows that if two conditions:   
 1. features are sparse,  
 2. and RELU cut off is used  
   
-The neural network will entangle these features  
-such that when one feature is detected,   
+The neural network will entangle these features such that when one feature is detected,   
 it will cause a set of entangled features to also be detected.  
 
 The activation function will cut off the weaker features  
