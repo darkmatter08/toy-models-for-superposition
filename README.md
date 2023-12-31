@@ -42,9 +42,10 @@ Build a network that outputs same feature vectors as inputs:
 y = f(x)  
 x = (num_of_data_points, num_of_feat)  
 y = (num_of_data_points, num_of_feat)  
+loss = mse(x, y)
 
-Two networks are tested:  
-src/superposition/toynet.py  
+see ![generate_x.py](src/superposition/generate_x.py) on how data is generated.  
+see ![toynet.py](src/superposition/toynet.py) on two models tested.  
   
 1. One Weight Linear Net  
   
