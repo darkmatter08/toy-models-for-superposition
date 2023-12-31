@@ -81,7 +81,7 @@ One Weight Linear Net:
 square box = w1 * w1.T 
 single column = b
 accross different sparsity levels
-(src/viz/03_all_sparsity_one_weight.png)
+![One Weight Linear Net Image](src/viz/03_all_sparsity_one_weight.png)
 
 
 This repo shows that if two conditions:  
