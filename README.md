@@ -160,11 +160,11 @@ Here feature strength is measured by the value of the matrix item.
 
 Normally, with 5 neurons you can represent at most 5 features each with one hot encoding.  
   
-feature 1 = (1,0,0,0,0) 
-feature 2 = (0,1,0,0,0) 
-feature 3 = (0,0,1,0,0) 
-feature 4 = (0,0,0,1,0) 
-feature 5 = (0,0,0,0,1) 
+feature 1 = (1,0,0,0,0)  
+feature 2 = (0,1,0,0,0)  
+feature 3 = (0,0,1,0,0)  
+feature 4 = (0,0,0,1,0)  
+feature 5 = (0,0,0,0,1)  
 
 But with sparsity and RELU, the neural network will learn different encoding schemes which are correlated.  
   
