@@ -69,10 +69,10 @@ constrained the decoder to use transposed of w1
     decoder: w2.shape = (num_of_middle, num_of_feat)  
              b.shape = (num_of_feat, )
 
-The network is trained using different sparsity levels:
-[0, 0.7, 0.9, 0.99, 0.999]
-0 = 100% of the the time a features appears
-0.7 = only 30% of the time a feature appears
+The network is trained using different sparsity levels:  
+[0, 0.7, 0.9, 0.99, 0.999]  
+0 = 100% of the the time a features appears  
+0.7 = only 30% of the time a feature appears  
 
 ## Results
 This repo shows that if two conditions:  
