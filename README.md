@@ -12,7 +12,7 @@ https://transformer-circuits.pub/2022/toy_model/index.html
 
 # Summary
 ## Superposition
-
+  
 Question:  
 Given a simple AI model:  
 1.  y = decoder(encoder(x))  
@@ -52,9 +52,9 @@ src/superposition/toynet.py
     num_of_feat = 20  
     num_of_middle = 5  
   
-    w1.shape = (num_of_feat, num_of_middle)  
-    w1.T.shape = (num_of_middle, num_of_feat)  
-    b.shape = (num_of_feat, )  
+    encoder: w1.shape = (num_of_feat, num_of_middle)  
+    decoder: w1.T.shape = (num_of_middle, num_of_feat)  
+             b.shape = (num_of_feat, )  
   
 constrained the decoder to use transposed of w1  
   
@@ -65,9 +65,14 @@ constrained the decoder to use transposed of w1
     num_of_feat = 20  
     num_of_middle = 5  
   
-    w1.shape = (num_of_feat, num_of_middle)  
-    w2.shape = (num_of_middle, num_of_feat)  
-    b.shape = (num_of_feat, )
+    encoder: w1.shape = (num_of_feat, num_of_middle)  
+    decoder: w2.shape = (num_of_middle, num_of_feat)  
+             b.shape = (num_of_feat, )
+
+The network is trained using different sparsity levels:
+[0, 0.7, 0.9, 0.99, 0.999]
+0 = 100% of the the time a features appears
+0.7 = only 30% of the time a feature appears
 
 ## Results
 This repo shows that if two conditions:  
@@ -94,6 +99,7 @@ onto 2d the XY space.
   
 So when a feature is detected, since the vector features are not 90 degrees(orthogonal)  
 another correlated features at the side will also fire  
-but the RELU will cut it off which allows the network to squeeze more features  
+but since the features are sparse, it is unlikely that both fired at the same time in reality  
+the RELU will cut it off which allows the network to squeeze more features  
 resulting in angles between features to be < 90 degrees (non independent)  
  
