@@ -78,8 +78,8 @@ def train_toy_model(
         epoch_loss_list.append(loss_t.item())
 
         if i % 2000 == 0:
-            print('epoch: ', i)
-            print('loss: ', loss_t.item())
+            # print('epoch: ', i)
+            # print('loss: ', loss_t.item())
 
             file_path_str = f'{save_folder_str}/{save_model_name}_{i}.pt'
 
