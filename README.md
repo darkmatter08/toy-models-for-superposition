@@ -4,7 +4,9 @@ https://transformer-circuits.pub/2022/toy_model/index.html
 
 TLDR;  
 The repo focus on a understaning how a simple linear encoder/decoder model compress data into the network when data has more dimensions then the output of the encoder.  
-When three conditions: sparse data, weighted data, and non-linear activation like RELU are fulfilled, the network can squeeze high dimensional data into the encoder.
+When three conditions: sparse data, weighted data when calculating loss, and non-linear activation like RELU are fulfilled, the network can squeeze high dimensional data into the encoder.
+
+Further, I make an observation that tenary encoding maybe happening in the encoder/decoder model, instead of just binary encoding.  
 
 To install and train : see ![docs/training.md](docs/training.md)
 
@@ -31,7 +33,7 @@ Thus achieving Superposition of features onto middle neurons?
 Answer: 
 When the following conditions are met:  
 1. features are sparse,  
-2. features are weighted with different importance in the loss function,
+2. features are weighted in the loss function,
 3. and RELU cut off is used  
   
 The next section will explain the setup to test the above results.  
@@ -42,7 +44,8 @@ y = f(x)
 x = (num_of_data_points, num_of_feat) = randomly generated and normalized to unit vector  
 y = (num_of_data_points, num_of_feat)  
 
-2. minimize loss = mse_loss(x, y) using Adam optimizer.  
+2. minimize weighted_mse_loss = weight * mse_loss(x, y) 
+using Adam optimizer with learning rate 0.001, and weight decay 0.01.  
   
 3. vary the sparsity of the data and plot the results.  
 
