@@ -153,9 +153,13 @@ left: w1
 mid: w2.T  
 right: bias  
 
-Observe that the w1 and w2 split up their roles. w1 focus on learning the first 5 most heavily weighted features.  
-While w2 learns the remaining features.  
+As we go right, observe that the w1 and w2 split up their roles. w1 focus on learning the first 5 most heavily weighted features. While w2 learns the remaining features.  
 This results in the w1 @ w2.T identity matrix to be filling up the upper diagonal while leaving the bottom diagonal empty(zero values).  
-It is possible that tenary encoding is happening. As values close to 0 are used to splits up the features to be represented between w1 and w2.  
+  
+It is possible that tenary encoding is happening. 
+Values close to 0 are used to splits up the features to be represented between w1 and w2.  
+
 While in w1, the values are strongly positive or negative.  
 Similarly in w2, the values are strongly positive or negative.   
+
+The tenary encoding may not be strictly 1, -1, 0 but rather strongly positive, strongly negative or close to zero.
