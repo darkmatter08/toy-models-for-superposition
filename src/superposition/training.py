@@ -66,7 +66,6 @@ def train_toy_model(
         pred_2t: Float[Tensor, 'n_feat n_data'] = toy_model(
             norm_x_2t.float()
         )
-
         loss_t = mean_weighted_square_error_loss(
             pred_2t=pred_2t,
             actual_2t=actual_2t,
@@ -116,7 +115,7 @@ def mean_weighted_square_error_loss(
     actual_2t: Float[Tensor, 'n_feat n_data'],
     weight_t: Float[Tensor, 'n_feat']
 ) -> Float[Tensor, '1']:
-    sqr_err_loss_t = (actual_2t - pred_2t.abs()) ** 2
+    sqr_err_loss_t = (actual_2t - pred_2t) ** 2
     w_se_loss_t = weight_t * sqr_err_loss_t
     # check above
     mw_se_loss_t = w_se_loss_t.mean()
