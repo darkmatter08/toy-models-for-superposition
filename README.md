@@ -140,35 +140,20 @@ This is 32 slots for 20 features.
   
 Superposition may be representing 32 features in some mixture of binary encoding and normal encoding where 1 neuron slot = 1 features.  
 
-For the Two Weight Linear Net, it is possible that tenary encoding is happening with -1, 0, 1 values in the middle 5 neurons.  
-This is 243 slots for 20 features.
-So the Two Weight Linear Net has more capacity.
+Comparing the weight values of OneWeightLinearNet and TwoWeightLinearNet:
+## One Weight Linear Net Weight and Biases
+![One Weight Linear Net Image](src/superposition/viz/a3_one_weight_n_bias.png)  
 
-More research is needed to look into the weights of 5 middle neurons.
+## Two Weight Linear Net Weight and Biases
+![Two Weight Linear Net Image](src/superposition/viz/b3_two_weight_n_bias.png)  
+Within one sparsity  
+left: w1  
+mid: w2.T  
+right: bias  
 
-# Conclusion
-
-This repo shows that if two conditions:   
-1. features are sparse,  
-2. and RELU cut off is used  
-  
-The neural network will entangle these features such that when one feature is detected, it will cause a set of entangled features to also be detected.  
-
-The activation function will cut off the weaker features and only allow few strong features to pass through.  
-Here feature strength is measured by the value of the matrix item.  
-
-Normally, with 5 neurons you can represent at most 5 features each with one hot encoding.  
-  
-feature 1 = (1,0,0,0,0)  
-feature 2 = (0,1,0,0,0)  
-feature 3 = (0,0,1,0,0)  
-feature 4 = (0,0,0,1,0)  
-feature 5 = (0,0,0,0,1)  
-
-But with sparsity and RELU, the neural network will learn different encoding schemes which are correlated.  
-  
-So when a feature is detected, another correlated features on the same row will also fire.  
-But since the features are sparse, it is unlikely that both fired at the same time in reality.  
-The RELU will cut off the negative value features resulting in correct encoding and decoding.  
-
-This allows the 5 neurons to pack more than 5 features inside. 
+Observe that the w1 and w2 split up their roles. w1 focus on learning the first 5 most heavily weighted features.  
+While w2 learns the remaining features.  
+This results in the w1 @ w2.T identity matrix to be filling up the upper diagonal while leaving the bottom diagonal empty(zero values).  
+It is possible that tenary encoding is happening. As values close to 0 are used to splits up the features to be represented between w1 and w2.  
+While in w1, the values are strongly positive or negative.  
+Similarly in w2, the values are strongly positive or negative.   
