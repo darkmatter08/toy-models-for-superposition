@@ -1,20 +1,14 @@
 # Toy Models for Superposition
 This repo PARTIALLY replicates some important results from:  
 https://transformer-circuits.pub/2022/toy_model/index.html  
-  
-The repo focus on a simple linear encoder decoder neural network which forms MLP layers in Transformers and are commonly used as the last layer for classification tasks.  
-A good theory of how linear encoder decoder layers interact with data sparsity and non linear activation layers like RELU is important for understanding how AI works.  
 
-# INSTALL
-```
-pyenv install 3.8.10
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+TLDR;  
+The repo focus on a understaning how a simple linear encoder/decoder model compress data into the network when data has more dimensions then the output of the encoder.  
+When three conditions: sparse data, weighted data, and non-linear activation like RELU are fulfilled, the network can squeeze high dimensional data into the encoder.
 
-# Summary
-## Superposition
+To install and train : see ![docs/training.md](docs/training.md)
+
+# Superposition
   
 Question:  
 Given a simple AI model:  
@@ -35,9 +29,10 @@ which means it can learn more features then the num_of_middle neurons?
 Thus achieving Superposition of features onto middle neurons?  
   
 Answer: 
-When the following two conditions are met:  
+When the following conditions are met:  
 1. features are sparse,  
-2. and RELU cut off is used  
+2. features are weighted with different importance in the loss function,
+3. and RELU cut off is used  
   
 The next section will explain the setup to test the above results.  
   
@@ -53,9 +48,10 @@ y = (num_of_data_points, num_of_feat)
 
 see ![generate_x.py](src/superposition/generate_x.py) on how data is generated.  
 see ![toynet.py](src/superposition/toynet.py) on two models tested.  
-see ![01_run_training.py](src/superposition/01_run_training.py) to train the two model. model was trained on RTX3060.  
-see ![02_viz_weights.py](src/superposition/02_viz_weights.py) to visualize weights of the model.  
-  
+
+To install and train : see ![docs/training.md](docs/training.md)
+
+ 
 ## AI Networks
   
 1. One Weight Linear Net  
@@ -106,7 +102,7 @@ White = Zero value, 0
 Blue = positive value  
 Red = negative value  
   
-![One Weight Linear Net Image](src/superposition/viz/03_all_sparsity_one_weight.png)  
+![One Weight Linear Net Image](src/superposition/viz/a2_one_identity_n_bias.png)  
   
 On the left, when data is not sparse and all features appear, the network only learned the identity matrix where the middle 5 diagonals are all blue. 
 This means only 5 out of 20 input features where learned as the rest of the matrices are white(empty). 
@@ -132,11 +128,10 @@ White = Zero value, 0
 Blue = positive value 1.3  
 Red = negative value -1.3  
   
-![Two Weight Linear Net Image](src/superposition/viz/03_all_sparsity_two_weight.png)  
+![Two Weight Linear Net Image](src/superposition/viz/b2_two_identity_n_bias.png)  
   
 The main difference between the Two Weight Linear Net and the transposed One Weight Linear Net is that the red values cluster towards the upper diagonal when sparsity increases from left to right.  
-  
-The right most chart learns all of the 20 input features when sparsity is 0.001.  
+The right most chart learns all of the 20 input features when sparsity is 0.01.  
 
 # Postulate
 How can 5 neurons represent 20 features?
