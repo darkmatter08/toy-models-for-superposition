@@ -61,5 +61,5 @@ if __name__ == "__main__":
         ax[b_fig_index].set_yticks([])
 
     plt.savefig(
-        f'src/superposition/viz/a2_one_identity_bias.png'
+        f'src/superposition/viz/a2_one_identity_n_bias.png'
     )
