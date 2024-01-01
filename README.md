@@ -151,13 +151,13 @@ Comparing the weight values of OneWeightLinearNet and TwoWeightLinearNet:
 
 ## Two Weight Linear Net Weight and Biases
 ![Two Weight Linear Net Image](src/superposition/viz/b3_two_weight_n_bias.png)  
-Within one sparsity  
-left: w1  
-mid: w2.T  
-right: bias  
+Within one sparsity block 
+left matrix = w1  
+mid matrix =  w2.T  
+right vector = bias  
 
 As we go right, observe that the w1 and w2 split up their roles. w1 focus on learning the first 5 most heavily weighted features. While w2 learns the remaining features.  
-This results in the w1 @ w2.T identity matrix to be filling up the upper diagonal while leaving the bottom diagonal empty(zero values).  
+This results in the w1 @ w2 identity matrix to be filling up the upper diagonal while leaving the bottom diagonal empty(zero values).  
   
 It is possible that tenary encoding is happening. 
 Values close to 0 are used to splits up the features to be represented between w1 and w2.  
