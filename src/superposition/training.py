@@ -89,7 +89,7 @@ def train_toy_model(
                 )
 
     final_model_state_dict = toy_model.state_dict()
-    final_file_path_str = f'{save_folder_str}/{save_model_name}_0.pt'
+    final_file_path_str = f'{save_folder_str}/{save_model_name}_final.pt'
 
     epoch_loss_json_str = f'{save_folder_str}/epoch_loss_list.json'
 
