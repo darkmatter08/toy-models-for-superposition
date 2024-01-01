@@ -162,7 +162,7 @@ This results in the w1 @ w2 identity matrix to be filling up the upper diagonal 
 It is possible that tenary encoding is happening. 
 Values close to 0 are used to splits up the features to be represented between w1 and w2.  
 
-While in w1, the values are strongly positive or negative.  
-Similarly in w2, the values are strongly positive or negative.   
+One a feature is in w1, the values are strongly positive or negative.  
+Similarly, once a feature is in w2, the values are strongly positive or negative.   
 
 The tenary encoding may not be strictly 1, -1, 0 but rather strongly positive, strongly negative or close to zero.
