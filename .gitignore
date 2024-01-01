@@ -1,6 +1,7 @@
-.vscode/
+__pycache__/
 **/*.pyc
 **/*.pt
 **/*.json
+**/*env.json
 docs/
 venv/
