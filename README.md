@@ -134,6 +134,8 @@ The main difference between the Two Weight Linear Net and the transposed One Wei
 The right most chart learns all of the 20 input features when sparsity is 0.01.  
 
 # Postulate
+Here we depart from replicating the paper and make some original observations.
+
 How can 5 neurons represent 20 features?
 if we use binary encoding, we can have 2 ^ 5 values if we have 5 slots.  
 This is 32 slots for 20 features.  
