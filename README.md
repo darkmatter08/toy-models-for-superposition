@@ -52,8 +52,8 @@ using Adam optimizer with learning rate 0.001, and weight decay 0.01.
 see ![generate_x.py](src/superposition/generate_x.py) on how data is generated.  
 see ![toynet.py](src/superposition/toynet.py) on two models tested.  
 
-To install and train : see ![docs/training.md](docs/training.md)
-download weights here: ![src/superposition/weights](srd/superposition/weights)
+To install and train : see ![docs/training.md](docs/training.md)  
+download weights here: ![src/superposition/weights](src/superposition/weights)
  
 ## AI Networks
   
