@@ -53,7 +53,7 @@ see ![generate_x.py](src/superposition/generate_x.py) on how data is generated.
 see ![toynet.py](src/superposition/toynet.py) on two models tested.  
 
 To install and train : see ![docs/training.md](docs/training.md)
-
+download weights here: ![src/superposition/weights](srd/superposition/weights)
  
 ## AI Networks
   
